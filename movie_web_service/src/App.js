@@ -1,47 +1,66 @@
-import React from "react";
-import axios from "axios";
-import Movie from "./Movie";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MovieList from "./Component/MovieList";
+import { Container, Row, Col } from "react-bootstrap";
+import Filter from "./Component/Filter";
+import SearchBar from "./Component/SearchBar";
 
-class App extends React.Component {
-  state = {
-    isLoading: true,
-    movie: [],
+function App() {
+  const [selectedSortOption, setSelectedSortOption] = useState("");
+
+  const handleFilterChange = (option) => {
+    setSelectedSortOption(option);
   };
-  getMovie = async () => {
-    const {
-      data: {
-        data: { movies },
-      },
-    } = await axios.get("https://yts.mx/api/v2/list_movies.json");
-    this.setState({ movies, isLoading: false });
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (query) => {
+    setSearchTerm(query);
   };
-  componentDidMount() {
-    this.getMovie();
-  }
-  render() {
-    const { isLoading, movies } = this.state;
-    return (
-      <div>
-        {isLoading
-          ? "Loading..."
-          : movies.map((movie) => {
-              console.log(movie);
-              return (
-                  <Movie
-                    key={movie.id}
-                    id={movie.id}
-                    year={movie.year}
-                    title={movie.title}
-                    summary={movie.summary}
-                    large_cover_image={movie.large_cover_image}
-                    genres={movie.genres}
-                    runtime={movie.runtime}
-                  />
-              );
-            })}
-      </div>
-    );
-  }
+
+  return (
+    <Router>
+      <Container fluid className="py-5">
+        <Row className="justify-content-center">
+          <Col xs={12} md={6} className="text-center">
+            <h1 style={{ fontSize: "36px", color: "#333", fontWeight: "bold" }}>
+              Movie Web Service
+            </h1>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col xs={12} md={6} className="text-center">
+            <SearchBar onSearch={handleSearch} />{" "}
+          </Col>
+        </Row>
+        <Filter handleFilterChange={handleFilterChange} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MovieList
+                moviesPerPage={10}
+                selectedSortOption={selectedSortOption}
+                searchTerm={searchTerm}
+                onSearch={handleSearch}
+              />
+            }
+          />
+          <Route
+            path="/movies/page/:page"
+            element={
+              <MovieList
+                moviesPerPage={10}
+                selectedSortOption={selectedSortOption}
+                searchTerm={searchTerm}
+                onSearch={handleSearch}
+              />
+            }
+          />
+        </Routes>
+      </Container>
+    </Router>
+  );
 }
 
 export default App;
