@@ -7,10 +7,8 @@ const SearchBar = ({ onSearch }) => {
     setQuery(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      onSearch(query);
-    }
+  const handleSearch = () => {
+    onSearch(query);
   };
 
   return (
@@ -20,7 +18,6 @@ const SearchBar = ({ onSearch }) => {
         placeholder="Search movie..."
         value={query}
         onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
         style={{
           padding: "8px",
           fontSize: "14px",
@@ -29,6 +26,7 @@ const SearchBar = ({ onSearch }) => {
           marginRight: "8px",
         }}
       />
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
 };

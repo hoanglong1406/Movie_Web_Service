@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Pagination } from "react-bootstrap";
+import { Container, Pagination } from "react-bootstrap";
 import Movie from "./Movie";
+import Filter from "./Filter";
 
-const MovieList = ({ moviesPerPage, selectedSortOption, searchTerm, onSearch }) => {
+const MovieList = ({ moviesPerPage, searchTerm, onSearch }) => {
   const { page } = useParams();
   const currentPage = parseInt(page, 10) || 1;
   const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +13,11 @@ const MovieList = ({ moviesPerPage, selectedSortOption, searchTerm, onSearch }) 
   const [totalPages, setTotalPages] = useState(0);
   const [availableWidth, setAvailableWidth] = useState(0);
   const navigate = useNavigate();
+  const [selectedSortOption, setSelectedSortOption] = useState("");
+
+  const handleFilterChange = (option) => {
+    setSelectedSortOption(option);
+  };
 
   // const handleSearch = (query) => {
   //   onSearch(query);
@@ -117,7 +123,8 @@ const MovieList = ({ moviesPerPage, selectedSortOption, searchTerm, onSearch }) 
   }
 
   return (
-    <div>
+    <Container>
+      <Filter handleFilterChange={handleFilterChange} />
 
       {movies.map((movie) => (
         <Movie key={movie.id} {...movie} />
@@ -144,7 +151,7 @@ const MovieList = ({ moviesPerPage, selectedSortOption, searchTerm, onSearch }) 
           )}
         </Pagination>
       </div>
-    </div>
+    </Container>
   );
 };
 

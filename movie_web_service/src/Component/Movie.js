@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { StarFill } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const movieImageStyle = {
   position: "relative",
@@ -76,6 +77,11 @@ function Movie({
   runtime,
   rating,
 }) {
+  const navigate = useNavigate();
+
+  const handleShowDetails = () => {
+    navigate(`/movies/${id}`);
+  };
   const [showDetails, setShowDetails] = useState(false);
 
   return (
@@ -107,7 +113,7 @@ function Movie({
           <div className="content" style={contentStyle}>
             <StarFill />
             <p>{rating} / 10 </p>
-            <Button variant="primary">Show Details</Button>
+            <Button variant="primary" onClick={handleShowDetails}>Show Details</Button>
           </div>
         </div>
       </Col>

@@ -17,6 +17,7 @@ const Filter = ({ handleFilterChange }) => {
       <Form.Select id="sort" value={sortOption} onChange={handleSortChange}>
         <option value="">None</option>
         <option value="title">Title</option>
+        <option value="rating">Rating</option>
         <option value="year">Year</option>
       </Form.Select>
     </Form>
